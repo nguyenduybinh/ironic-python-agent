@@ -114,7 +114,12 @@ def clean_up(device):
     try:
         rts_root = rtslib_fb.RTSRoot()
     except (OSError, EnvironmentError, rtslib_fb.RTSLibError) as exc:
-        LOG.info('Linux-IO is not available, attemting to stop tgtd mapping. '
+        cmd = ['tgtadm', '--mode', 'target', '--op', 'show']
+        result = _execute(cmd)
+        if not result:
+            LOG.info('System dont have tgtd mapping')
+            return
+	LOG.info('Linux-IO is not available, attemting to stop tgtd mapping. '
                  'Error: %s.', exc)
         cmd = ['tgtadm', '--lld', 'iscsi', '--mode', 'target', '--op',
                'unbind', '--tid', '1', '--initiator-address', 'ALL']
