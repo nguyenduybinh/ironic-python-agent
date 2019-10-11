@@ -115,7 +115,7 @@ def clean_up(device):
         rts_root = rtslib_fb.RTSRoot()
     except (OSError, EnvironmentError, rtslib_fb.RTSLibError) as exc:
         cmd = ['tgtadm', '--mode', 'target', '--op', 'show']
-        result = _execute(cmd)
+        result = _execute(cmd, "Error when listing tgtd mapping")
         if not result:
             LOG.info('System dont have tgtd mapping')
             return
